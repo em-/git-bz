@@ -1638,7 +1638,8 @@ def do_apply(*args):
 # Lines starting with '#' will be ignored.  Delete everything to abort.
 """)
 
-            lines = edit_template(template.getvalue())
+            # assume commit messages are valid utf8 (git complains if not)
+            lines = edit_template(unicode(template.getvalue(), 'utf-8'))
             patches = []
             for line in lines:
                 match = re.match('^(\d+)', line)
@@ -1739,7 +1740,8 @@ def edit_attachment_comment(bug, initial_description, initial_body):
     if len(bug.patches) > 0:
         template.write("# To obsolete existing patches, uncomment the appropriate lines.\n")
 
-    lines = edit_template(template.getvalue())
+    # assume commit messages are valid utf8 (git complains if not)
+    lines = edit_template(unicode(template.getvalue(), 'utf-8'))
 
     obsoletes= []
     def filter_obsolete(line):
@@ -1934,7 +1936,8 @@ def edit_bug(bug, applied_commits=None, fix_commits=None):
 
         template.write("\n")
 
-    lines = edit_template(template.getvalue())
+    # assume commit messages are valid utf8 (git complains if not)
+    lines = edit_template(unicode(template.getvalue(), 'utf-8'))
 
     def filter_line(line):
         m = re.match("^\s*Resolution\s*:\s*(\S+)", line)
@@ -2197,7 +2200,8 @@ def do_file(*args):
     for commit in reversed(commits):
         template.write("#   " + commit.id[0:7] + " " + commit.subject + "\n")
 
-    lines = edit_template(template.getvalue())
+    # assume commit messages are valid utf8 (git complains if not)
+    lines = edit_template(unicode(template.getvalue(), 'utf-8'))
 
     summary, description = split_subject_body(lines)
 
