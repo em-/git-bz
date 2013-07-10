@@ -2032,7 +2032,7 @@ def edit_bug(bug, applied_commits=None, fix_commits=None):
         else:
             print "Changed status of attachment to %s: %s - %s" % (status, patch.attach_id, patch.description)
 
-    if fix_commits is not None:
+    if fix_commits is not None and not global_options.no_reupload:
         attach_commits(bug, fix_commits, status='committed')
 
     if resolution is not None:
@@ -2395,6 +2395,8 @@ elif command == 'push':
     add_fix_option()
     parser.add_option("-f", "--force", action="store_true",
                       help="allow non-fast-forward commits")
+    parser.add_option("", "--no-reupload", action="store_true", dest="no_reupload",
+                      help="do not reupload patches, assuming they have not been changed")
     min_args = 0
     max_args = 1000 # no max
 else:
